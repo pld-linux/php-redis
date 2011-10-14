@@ -1,3 +1,7 @@
+#
+# Conditional build:
+%bcond_without	tests		# build without tests
+
 %define		modname	redis
 Summary:	%{modname} A PHP extension for Redis
 Name:		php-%{modname}
@@ -8,9 +12,12 @@ Group:		Development/Languages/PHP
 Source0:	https://github.com/nicolasff/phpredis/tarball/%{version}#/%{name}-%{version}.tgz
 # Source0-md5:	eb2bee7e42f7a32a38c2a45377f21086
 URL:		https://github.com/nicolasff/phpredis
+%{?with_tests:BuildRequires:	/usr/bin/php}
 BuildRequires:	php-devel >= 4:5.0.4
+%{?with_tests:BuildRequires:	php-session}
 BuildRequires:	rpmbuild(macros) >= 1.519
 %{?requires_php_extension}
+Requires:	php-session
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -28,9 +35,19 @@ phpize
 %configure
 %{__make}
 
+%if %{with tests}
+# simple module load test
+%{__php} -n \
+	-dextension_dir=modules \
+	-dextension=%{php_extensiondir}/spl.so \
+	-dextension=%{php_extensiondir}/session.so \
+	-dextension=%{modname}.so \
+	-m > modules.log
+grep %{modname} modules.log
+%endif
+
 %install
 rm -rf $RPM_BUILD_ROOT
-
 %{__make} install \
 	EXTENSION_DIR=%{php_extensiondir} \
 	INSTALL_ROOT=$RPM_BUILD_ROOT

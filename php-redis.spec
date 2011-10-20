@@ -15,6 +15,7 @@ URL:		https://github.com/nicolasff/phpredis
 %{?with_tests:BuildRequires:	/usr/bin/php}
 BuildRequires:	php-devel >= 4:5.0.4
 %{?with_tests:BuildRequires:	php-session}
+%{?with_tests:BuildRequires:	php-simplexml}
 BuildRequires:	rpmbuild(macros) >= 1.519
 %{?requires_php_extension}
 Requires:	php-session

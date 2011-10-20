@@ -40,6 +40,7 @@ phpize
 # simple module load test
 %{__php} -n \
 	-dextension_dir=modules \
+	-dextension=%{php_extensiondir}/simplexml.so \
 	-dextension=%{php_extensiondir}/spl.so \
 	-dextension=%{php_extensiondir}/session.so \
 	-dextension=%{modname}.so \

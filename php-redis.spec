@@ -1,3 +1,5 @@
+# TODO
+# - use external igbinary and make it's dependency optional
 #
 # Conditional build:
 %bcond_without	tests		# build without tests
@@ -6,11 +8,13 @@
 Summary:	%{modname} A PHP extension for Redis
 Name:		php-%{modname}
 Version:	2.1.3
-Release:	1
+Release:	2
 License:	PHP 3.01
 Group:		Development/Languages/PHP
 Source0:	https://github.com/nicolasff/phpredis/tarball/%{version}#/%{name}-%{version}.tgz
 # Source0-md5:	eb2bee7e42f7a32a38c2a45377f21086
+Source1:	https://github.com/ukko/phpredis-phpdoc/tarball/master/%{name}-phpdoc.tgz
+# Source1-md5:	110fec82bf7699e7be195a2ec911f3c8
 URL:		https://github.com/nicolasff/phpredis
 %{?with_tests:BuildRequires:	/usr/bin/php}
 BuildRequires:	php-devel >= 4:5.0.4
@@ -28,8 +32,9 @@ Redis key-value store.
 This extension also provides session support.
 
 %prep
-%setup -qc
-mv *-php%{modname}-*/* .
+%setup -qc -a1
+mv nicolasff-php%{modname}-*/* .
+mv ukko-phpredis-phpdoc-* phpdoc
 
 %build
 phpize
@@ -73,6 +78,6 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc CREDITS README.markdown
+%doc CREDITS README.markdown phpdoc
 %config(noreplace) %verify(not md5 mtime size) %{php_sysconfdir}/conf.d/%{modname}.ini
 %attr(755,root,root) %{php_extensiondir}/%{modname}.so

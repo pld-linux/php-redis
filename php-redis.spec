@@ -4,25 +4,26 @@
 # Conditional build:
 %bcond_without	tests		# build without tests
 
+%define		php_name	php%{?php_suffix}
 %define		modname	redis
 Summary:	%{modname} A PHP extension for Redis
-Name:		php-%{modname}
+Name:		%{php_name}-%{modname}
 Version:	2.1.3
 Release:	3
 License:	PHP 3.01
 Group:		Development/Languages/PHP
-Source0:	https://github.com/nicolasff/phpredis/tarball/%{version}#/%{name}-%{version}.tgz
+Source0:	https://github.com/nicolasff/phpredis/tarball/%{version}#/%{modname}-%{version}.tgz
 # Source0-md5:	eb2bee7e42f7a32a38c2a45377f21086
-Source1:	https://github.com/ukko/phpredis-phpdoc/tarball/master/%{name}-phpdoc.tgz
-# Source1-md5:	110fec82bf7699e7be195a2ec911f3c8
+Source1:	https://github.com/ukko/phpredis-phpdoc/tarball/master/%{modname}-phpdoc.tgz
+# Source1-md5:	b7cce5ee29c6597e0fdd3557397e1b2a
 URL:		https://github.com/nicolasff/phpredis
 %{?with_tests:BuildRequires:	/usr/bin/php}
-BuildRequires:	php-devel >= 4:5.0.4
-%{?with_tests:BuildRequires:	php-session}
-%{?with_tests:BuildRequires:	php-simplexml}
+BuildRequires:	%{php_name}-devel >= 4:5.0.4
+%{?with_tests:BuildRequires:	%{php_name}-session}
+%{?with_tests:BuildRequires:	%{php_name}-simplexml}
 BuildRequires:	rpmbuild(macros) >= 1.519
 %{?requires_php_extension}
-Requires:	php-session
+Requires:	%{php_name}-session
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description

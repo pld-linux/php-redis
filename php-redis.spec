@@ -9,7 +9,7 @@
 Summary:	%{modname} A PHP extension for Redis
 Name:		%{php_name}-%{modname}
 Version:	2.1.3
-Release:	3
+Release:	4
 License:	PHP 3.01
 Group:		Development/Languages/PHP
 Source0:	https://github.com/nicolasff/phpredis/tarball/%{version}?/%{modname}-%{version}.tgz

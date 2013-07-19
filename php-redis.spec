@@ -12,7 +12,7 @@ Version:	2.1.3
 Release:	3
 License:	PHP 3.01
 Group:		Development/Languages/PHP
-Source0:	https://github.com/nicolasff/phpredis/tarball/%{version}#/%{modname}-%{version}.tgz
+Source0:	https://github.com/nicolasff/phpredis/tarball/%{version}?/%{modname}-%{version}.tgz
 # Source0-md5:	eb2bee7e42f7a32a38c2a45377f21086
 Source1:	https://github.com/ukko/phpredis-phpdoc/tarball/master/%{modname}-phpdoc.tgz
 # Source1-md5:	b7cce5ee29c6597e0fdd3557397e1b2a

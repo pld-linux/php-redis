@@ -8,12 +8,12 @@
 %define		modname	redis
 Summary:	%{modname} A PHP extension for Redis
 Name:		%{php_name}-%{modname}
-Version:	2.1.3
-Release:	4
+Version:	2.2.5
+Release:	1
 License:	PHP 3.01
 Group:		Development/Languages/PHP
-Source0:	https://github.com/nicolasff/phpredis/tarball/%{version}?/%{modname}-%{version}.tgz
-# Source0-md5:	eb2bee7e42f7a32a38c2a45377f21086
+Source0:	https://github.com/nicolasff/phpredis/tarball/%{version}/%{modname}-%{version}.tar.gz
+# Source0-md5:	0e82aed77f2c23a9072b277ecdef6dba
 Source1:	https://github.com/ukko/phpredis-phpdoc/tarball/master/%{modname}-phpdoc.tgz
 # Source1-md5:	b7cce5ee29c6597e0fdd3557397e1b2a
 URL:		https://github.com/nicolasff/phpredis

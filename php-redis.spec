@@ -9,7 +9,7 @@
 Summary:	%{modname} A PHP extension for Redis
 Name:		%{php_name}-%{modname}
 Version:	2.2.5
-Release:	1
+Release:	2
 License:	PHP 3.01
 Group:		Development/Languages/PHP
 Source0:	https://github.com/nicolasff/phpredis/tarball/%{version}/%{modname}-%{version}.tar.gz
@@ -17,13 +17,14 @@ Source0:	https://github.com/nicolasff/phpredis/tarball/%{version}/%{modname}-%{v
 Source1:	https://github.com/ukko/phpredis-phpdoc/tarball/master/%{modname}-phpdoc.tgz
 # Source1-md5:	b7cce5ee29c6597e0fdd3557397e1b2a
 URL:		https://github.com/nicolasff/phpredis
-%{?with_tests:BuildRequires:	/usr/bin/php}
 BuildRequires:	%{php_name}-devel >= 4:5.0.4
 %{?with_tests:BuildRequires:	%{php_name}-session}
 %{?with_tests:BuildRequires:	%{php_name}-simplexml}
+%{?with_tests:BuildRequires:	/usr/bin/php}
 BuildRequires:	rpmbuild(macros) >= 1.519
 %{?requires_php_extension}
 Requires:	%{php_name}-session
+Obsoletes:	php-redis < 2.2.5-1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description

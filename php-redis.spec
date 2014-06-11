@@ -14,8 +14,8 @@ License:	PHP 3.01
 Group:		Development/Languages/PHP
 Source0:	https://github.com/nicolasff/phpredis/tarball/%{version}/%{modname}-%{version}.tar.gz
 # Source0-md5:	0e82aed77f2c23a9072b277ecdef6dba
-Source1:	https://github.com/ukko/phpredis-phpdoc/tarball/master/%{modname}-phpdoc.tgz
-# Source1-md5:	b7cce5ee29c6597e0fdd3557397e1b2a
+Source1:	https://github.com/ukko/phpredis-phpdoc/tarball/master/%{modname}-phpdoc.tar.gz
+# Source1-md5:	9667e1b2976826915044e3a642847625
 URL:		https://github.com/nicolasff/phpredis
 BuildRequires:	%{php_name}-devel >= 4:5.0.4
 %{?with_tests:BuildRequires:	%{php_name}-session}

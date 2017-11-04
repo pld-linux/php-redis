@@ -8,20 +8,20 @@
 %define		modname	redis
 Summary:	%{modname} A PHP extension for Redis
 Name:		%{php_name}-%{modname}
-Version:	2.2.5
-Release:	4
+Version:	3.1.4
+Release:	1
 License:	PHP 3.01
 Group:		Development/Languages/PHP
 Source0:	https://github.com/nicolasff/phpredis/tarball/%{version}/%{modname}-%{version}.tar.gz
-# Source0-md5:	0e82aed77f2c23a9072b277ecdef6dba
+# Source0-md5:	c5ba8b560b5766d5318d25ea65ca929f
 Source1:	https://github.com/ukko/phpredis-phpdoc/tarball/master/%{modname}-phpdoc.tar.gz
-# Source1-md5:	9667e1b2976826915044e3a642847625
+# Source1-md5:	eb4163a1c5eaaa41beccfba9be0a9878
 URL:		https://github.com/nicolasff/phpredis
 BuildRequires:	%{php_name}-devel >= 4:5.0.4
 %{?with_tests:BuildRequires:	%{php_name}-pcre}
 %{?with_tests:BuildRequires:	%{php_name}-session}
 %{?with_tests:BuildRequires:	%{php_name}-simplexml}
-%{?with_tests:BuildRequires:	/usr/bin/php}
+%{?with_tests:BuildRequires:	%{__php}}
 BuildRequires:	rpmbuild(macros) >= 1.519
 %{?requires_php_extension}
 Requires:	%{php_name}-session
@@ -37,7 +37,7 @@ This extension also provides session support.
 
 %prep
 %setup -qc -a1
-mv nicolasff-php%{modname}-*/* .
+mv phpredis-phpredis-*/* .
 mv ukko-phpredis-phpdoc-* phpdoc
 
 %build

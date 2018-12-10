@@ -12,17 +12,17 @@ Version:	4.2.0
 Release:	1
 License:	PHP 3.01
 Group:		Development/Languages/PHP
-Source0:	https://github.com/nicolasff/phpredis/tarball/%{version}/%{modname}-%{version}.tar.gz
+Source0:	https://github.com/phpredis/phpredis/tarball/%{version}/%{modname}-%{version}.tar.gz
 # Source0-md5:	e2664b39d94f5f72f2e6ac27db92bc70
-Source1:	https://github.com/ukko/phpredis-phpdoc/tarball/master/%{modname}-phpdoc.tar.gz
-# Source1-md5:	52160e53904c1072ae98345de4127de2
-URL:		https://github.com/nicolasff/phpredis
+Source1:	https://github.com/ukko/phpredis-phpdoc/archive/9ec1795bcd45ec83a19b46cf9a8b78b4e4d7ac80/%{modname}-phpdoc.tar.gz
+# Source1-md5:	eaba2e5fad040e2f4526374c073ae5f7
+URL:		https://github.com/phpredis/phpredis
 BuildRequires:	%{php_name}-devel >= 4:5.0.4
 %if %{with tests}
+BuildRequires:	%{php_name}-cli
 BuildRequires:	%{php_name}-pcre
 BuildRequires:	%{php_name}-session
 BuildRequires:	%{php_name}-simplexml
-BuildRequires:	%{php_name}-cli
 %endif
 BuildRequires:	rpmbuild(macros) >= 1.519
 %{?requires_php_extension}
@@ -40,7 +40,7 @@ This extension also provides session support.
 %prep
 %setup -qc -a1
 mv phpredis-phpredis-*/* .
-mv ukko-phpredis-phpdoc-* phpdoc
+mv phpredis-phpdoc-* phpdoc
 
 %build
 phpize
@@ -72,6 +72,9 @@ cat <<'EOF' > $RPM_BUILD_ROOT%{php_sysconfdir}/conf.d/%{modname}.ini
 extension=%{modname}.so
 EOF
 
+install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+cp -a phpdoc/src/*.php $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -85,6 +88,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc CREDITS README.markdown phpdoc
+%doc CREDITS README.markdown
 %config(noreplace) %verify(not md5 mtime size) %{php_sysconfdir}/conf.d/%{modname}.ini
 %attr(755,root,root) %{php_extensiondir}/%{modname}.so
+%{_examplesdir}/%{name}-%{version}

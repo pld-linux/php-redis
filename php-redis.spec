@@ -24,11 +24,11 @@ Source1:	https://github.com/ukko/phpredis-phpdoc/archive/9ec1795bcd45ec83a19b46c
 # Source1-md5:	eaba2e5fad040e2f4526374c073ae5f7
 URL:		https://github.com/phpredis/phpredis
 BuildRequires:	%{php_name}-devel >= 4:5.0.4
-%if %{with tests}
 BuildRequires:	%{php_name}-cli
 BuildRequires:	%{php_name}-pcre
 BuildRequires:	%{php_name}-session
 BuildRequires:	%{php_name}-simplexml
+%if %{with tests}
 %endif
 BuildRequires:	rpmbuild(macros) >= 1.519
 %{?requires_php_extension}
@@ -63,7 +63,6 @@ phpize
 %configure
 %{__make}
 
-%if %{with tests}
 # simple module load test
 %{__php} -n \
 	-dextension_dir=modules \
@@ -74,7 +73,6 @@ phpize
 	-dextension=%{modname}.so \
 	-m > modules.log
 grep %{modname} modules.log
-%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT

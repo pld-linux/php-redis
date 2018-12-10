@@ -3,7 +3,7 @@
 #
 # Conditional build:
 %bcond_without	phpdoc		# build phpdoc package
-%bcond_without	tests		# build without tests
+%bcond_with	tests		# build without tests
 
 # build "phpdoc" only for 7.3 version on pld builders
 %if 0%{?_pld_builder:1} && "%{?php_suffix}" != "73"
@@ -23,12 +23,14 @@ Source0:	https://github.com/phpredis/phpredis/tarball/%{version}/%{modname}-%{ve
 Source1:	https://github.com/ukko/phpredis-phpdoc/archive/9ec1795bcd45ec83a19b46cf9a8b78b4e4d7ac80/%{modname}-phpdoc.tar.gz
 # Source1-md5:	eaba2e5fad040e2f4526374c073ae5f7
 URL:		https://github.com/phpredis/phpredis
-BuildRequires:	%{php_name}-devel >= 4:5.0.4
 BuildRequires:	%{php_name}-cli
+BuildRequires:	%{php_name}-devel >= 4:5.0.4
 BuildRequires:	%{php_name}-pcre
 BuildRequires:	%{php_name}-session
 BuildRequires:	%{php_name}-simplexml
 %if %{with tests}
+BuildRequires:	%{php_name}-pecl-igbinary
+BuildRequires:	%{php_name}-zlib
 %endif
 BuildRequires:	rpmbuild(macros) >= 1.519
 %{?requires_php_extension}
@@ -63,16 +65,39 @@ phpize
 %configure
 %{__make}
 
-# simple module load test
-%{__php} -n \
+export TEST_PHP_EXECUTABLE="%{__php}"
+export TEST_PHP_ARGS=" -n \
 	-dextension_dir=modules \
 	-dextension=%{php_extensiondir}/pcre.so \
 	-dextension=%{php_extensiondir}/spl.so \
 	-dextension=%{php_extensiondir}/simplexml.so \
 	-dextension=%{php_extensiondir}/session.so \
 	-dextension=%{modname}.so \
-	-m > modules.log
+"
+
+# simple module load test
+$TEST_PHP_EXECUTABLE $TEST_PHP_ARGS -m > modules.log
 grep %{modname} modules.log
+
+%if %{with tests}
+TEST_PHP_ARGS="
+	$TEST_PHP_ARGS
+	-dextension=%{php_extensiondir}/zlib.so \
+"
+
+# Run tests for Redis class (note this is the default)
+$TEST_PHP_EXECUTABLE $TEST_PHP_ARGS tests/TestRedis.php --class Redis
+
+# Run tests for RedisArray class
+tests/mkring.sh start
+$TEST_PHP_EXECUTABLE $TEST_PHP_ARGS tests/TestRedis.php --class RedisArray
+tests/mkring.sh stop
+
+# Run tests for the RedisCluster class
+tests/make-cluster.sh start
+$TEST_PHP_EXECUTABLE $TEST_PHP_ARGS tests/TestRedis.php --class RedisCluster
+tests/make-cluster.sh stop
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT

@@ -2,7 +2,13 @@
 # - use external igbinary and make it's dependency optional
 #
 # Conditional build:
+%bcond_without	phpdoc		# build phpdoc package
 %bcond_without	tests		# build without tests
+
+# build "phpdoc" only for 7.3 version on pld builders
+%if 0%{?_pld_builder:1} && "%{?php_suffix}" != "73"
+%undefine	with_phpdoc
+%endif
 
 %define		php_name	php%{?php_suffix}
 %define		modname	redis
@@ -36,6 +42,16 @@ The phpredis extension provides an API for communicating with the
 Redis key-value store.
 
 This extension also provides session support.
+
+%package -n php-redis-phpdoc
+Summary:	@phpdoc extension PHP for IDE autocomplete
+Group:		Documentation
+URL:		https://github.com/ukko/phpredis-phpdoc
+Requires:	php-dirs
+BuildArch:	noarch
+
+%description -n php-redis-phpdoc
+@phpdoc extension PHP for IDE autocomplete.
 
 %prep
 %setup -qc -a1
@@ -72,8 +88,8 @@ cat <<'EOF' > $RPM_BUILD_ROOT%{php_sysconfdir}/conf.d/%{modname}.ini
 extension=%{modname}.so
 EOF
 
-install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-cp -a phpdoc/src/*.php $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+install -d $RPM_BUILD_ROOT%{_examplesdir}/php-%{modname}-%{version}
+cp -a phpdoc/src/*.php $RPM_BUILD_ROOT%{_examplesdir}/php-%{modname}-%{version}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -91,4 +107,9 @@ fi
 %doc CREDITS README.markdown
 %config(noreplace) %verify(not md5 mtime size) %{php_sysconfdir}/conf.d/%{modname}.ini
 %attr(755,root,root) %{php_extensiondir}/%{modname}.so
-%{_examplesdir}/%{name}-%{version}
+
+%if %{with phpdoc}
+%files -n php-redis-phpdoc
+%defattr(644,root,root,755)
+%{_examplesdir}/php-%{modname}-%{version}
+%endif

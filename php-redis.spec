@@ -14,20 +14,21 @@
 %define		modname	redis
 Summary:	%{modname} A PHP extension for Redis
 Name:		%{php_name}-%{modname}
-Version:	4.3.0
+Version:	5.1.0
 Release:	1
 License:	PHP 3.01
 Group:		Development/Languages/PHP
 Source0:	https://github.com/phpredis/phpredis/tarball/%{version}/%{modname}-%{version}.tar.gz
-# Source0-md5:	a038194807474611cf76dd727098b986
+# Source0-md5:	1a175f0351a2fab4f495a935c20fb239
 Source1:	https://github.com/ukko/phpredis-phpdoc/archive/9ec1795bcd45ec83a19b46cf9a8b78b4e4d7ac80/%{modname}-phpdoc.tar.gz
 # Source1-md5:	eaba2e5fad040e2f4526374c073ae5f7
 URL:		https://github.com/phpredis/phpredis
 BuildRequires:	%{php_name}-cli
-BuildRequires:	%{php_name}-devel >= 4:5.0.4
+BuildRequires:	%{php_name}-devel >= 4:7.0
 BuildRequires:	%{php_name}-pcre
 BuildRequires:	%{php_name}-session
 BuildRequires:	%{php_name}-simplexml
+BuildRequires:	zstd-devel >= 1.3.0
 %if %{with tests}
 BuildRequires:	%{php_name}-pecl-igbinary
 BuildRequires:	%{php_name}-zlib
@@ -62,7 +63,8 @@ mv phpredis-phpdoc-* phpdoc
 
 %build
 phpize
-%configure
+%configure \
+	--enable-redis-zstd
 %{__make}
 
 export TEST_PHP_EXECUTABLE="%{__php}"

@@ -25,6 +25,7 @@ Source1:	https://github.com/ukko/phpredis-phpdoc/archive/9ec1795bcd45ec83a19b46c
 URL:		https://github.com/phpredis/phpredis
 BuildRequires:	%{php_name}-cli
 BuildRequires:	%{php_name}-devel >= 4:7.0
+BuildRequires:	%{php_name}-json
 BuildRequires:	%{php_name}-pcre
 BuildRequires:	%{php_name}-session
 BuildRequires:	%{php_name}-simplexml
@@ -35,6 +36,7 @@ BuildRequires:	%{php_name}-zlib
 %endif
 BuildRequires:	rpmbuild(macros) >= 1.519
 %{?requires_php_extension}
+Requires:	%{php_name}-json
 Requires:	%{php_name}-session
 Provides:	php(%{modname}) = %{version}
 Obsoletes:	php-redis < 2.2.5-1
@@ -70,10 +72,13 @@ phpize
 export TEST_PHP_EXECUTABLE="%{__php}"
 export TEST_PHP_ARGS=" -n \
 	-dextension_dir=modules \
+%if "%php_major_version.%php_minor_version" < "7.4"
 	-dextension=%{php_extensiondir}/pcre.so \
 	-dextension=%{php_extensiondir}/spl.so \
+%endif
 	-dextension=%{php_extensiondir}/simplexml.so \
 	-dextension=%{php_extensiondir}/session.so \
+	-dextension=%{php_extensiondir}/json.so \
 	-dextension=%{modname}.so \
 "
 
